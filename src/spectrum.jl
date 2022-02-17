@@ -18,7 +18,7 @@ function checkSpectrum(spectrum::AbstractVector{Tv}, size::Ti) where {Tv <: Comp
         if imag(spectrum[idx]) == 0
             step = 1
         else
-            if (imag(spectrum[idx]) != imag(spectrum[idx+1])) && (real(spectrum[idx]) != real(spectrum[idx+1]))
+            if (imag(spectrum[idx]) != -imag(spectrum[idx+1])) && (real(spectrum[idx]) != real(spectrum[idx+1]))
                 @info spectrum[idx], spectrum[idx+1],conj(spectrum[idx+1])
                 error(
                     "for initialisationg of non-symmetric matrix, the given spectrum is invalid, please follow the instruction",

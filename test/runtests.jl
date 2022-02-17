@@ -62,7 +62,7 @@ function f2(idx::Integer, size = size)
     if idx % 2 == 0
         return 10 * cos((idx) * 2 * π / size) + 5 * rnd + 5 * sin((idx) * 2 * π / size) * im
     else
-        return 10 * cos((idx+1) * 2 * π / size) + 5 * rnd + 5 * sin((idx+1) * 2 * π / size) * im
+        return 10 * cos((idx+1) * 2 * π / size) + 5 * rnd - 5 * sin((idx+1) * 2 * π / size) * im
     end
 end
 
