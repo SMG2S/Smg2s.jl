@@ -6,10 +6,10 @@ using Plots
 using LinearAlgebra
 using Random
 
-size = 2000
-diag_l = -120
-diag_u = -5
-nbOne = 40
+size = 1000
+diag_l = -250
+diag_u = -2
+nbOne = 80
 
 nilpvec = zeros(Int64, size)
 
@@ -58,10 +58,11 @@ p1=scatter!(real(genspec1), imag(genspec1), markercolor = :red, markersize = 5, 
 
 ## Non symmetric 1
 function f2(idx::Integer, size = size)
+    rnd = rand()
     if idx % 2 == 0
-        return 10 * cos(((idx-1) / 2) * 2 * π / size) + 5 + 5 * sin(((idx-1) / 2) * 2 * π / size) * im
+        return 10 * cos((idx) * 2 * π / size) + 5 * rnd + 5 * sin((idx) * 2 * π / size) * im
     else
-        return 10 * cos(((idx-1) / 2) * 2 * π / size) + 5 - 5 * sin(((idx-1) / 2) * 2 * π / size) * im
+        return 10 * cos((idx+1) * 2 * π / size) + 5 * rnd + 5 * sin((idx+1) * 2 * π / size) * im
     end
 end
 
@@ -90,7 +91,7 @@ Spectrum!(spec3, f3, size)
 
 
 Am3 = spzeros(Float64, size, size)
-initMat!(Am3, diag_l, diag_u, size; scale=0.1, sparsity=0.005)
+initMat!(Am3, diag_l, diag_u, size; scale=0.1, sparsity=1.05)
 @time genMat3 = nonsym(size, diag_l, diag_u, spec3, Am3, nilp)
 
 @info "sparsity = " nnz(genMat3) / (size * size)

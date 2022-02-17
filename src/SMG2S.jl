@@ -5,11 +5,17 @@ using SparseArrays
 using Random
 
 export Nilpotent, Nilp
-export Spectrum!
+export Spectrum!, checkSpectrum
 export initMat!
 export nonherm, nonsym
-# Write your package code here.
 
+include("nilpotent.jl")
+include("spectrum.jl")
+include("init.jl")
+include("nonsym.jl")
+include("nonherm.jl")
+
+#=
 struct Nilpotent{Ti<:Integer}
     diagPosition::Ti
     nbOne::Ti
@@ -92,6 +98,26 @@ end
 function Spectrum!(spec::AbstractVector{Tv}, vec::AbstractVector{Tv}, size::Ti) where {Tv<:Complex, Ti<:Integer}
     for i = 1:size
         spec[i] = Tv(vec[i])
+    end
+end
+
+function checkSpectrum(spectrum::AbstractVector{Tv}, size::Ti) where {Tv <: Complex, Ti <: Integer}
+    idx = 1
+
+    while idx < size
+        if imag(spectrum[idx]) == 0
+            step = 1
+        else
+            if (imag(spectrum[idx]) != imag(spectrum[idx+1])) && (real(spectrum[idx]) != real(spectrum[idx+1]))
+                @info spectrum[idx], spectrum[idx+1],conj(spectrum[idx+1])
+                error(
+                    "for initialisationg of non-symmetric matrix, the given spectrum is invalid, please follow the instruction",
+                    )
+            end
+            step = 2
+        end
+
+        idx += step
     end
 end
 
@@ -303,6 +329,8 @@ function nonsym(
     spectrum::AbstractVector{Tv}
 ) where {Tv<:Complex, Ti<:Integer}
 
+    checkSpectrum(spectrum, size)
+
     Tv2 = eltype(real(spectrum[1]))
 
     Am = spzeros(Tv2, size, size)
@@ -354,6 +382,8 @@ function nonsym(
     Am::SparseMatrixCSC{Tv2, Ti},
 ) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
 
+    checkSpectrum(spectrum, size)
+
     nilp = Nilp(nbOne, size)
 
     for i = 1:size
@@ -400,6 +430,8 @@ function nonsym(
     nilp::Nilpotent{Ti}
 ) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
 
+    checkSpectrum(spectrum, size)
+
     for i = 1:size
         Am[i, i] = real(spectrum[i])
     end
@@ -434,5 +466,5 @@ function nonsym(
     return Am
 end
 
-
+=#
 end #endmodule
