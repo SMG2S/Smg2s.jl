@@ -70,3 +70,64 @@ function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
     return Nilpotent(diagPosition, nbOne, size, degree, dropzeros(nilpMat))
 
 end
+
+function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
+
+    diagPosition::Ti = 2
+    nbOne::Ti = 1
+    degree::Ti = 1
+
+    nilpMat = matrix
+
+    while degree <= maxdegree
+        if matrix == spzeros(Tv, size, size)
+            break
+        end
+        matrix *= nilpMat
+        degree += 1
+    end
+
+    if degree > maxdegree
+        error("the given nilpotent matrix is invalid")
+    end
+
+    @info "the degree of given nilpotent matrix is: " degree
+
+    return Nilpotent(diagPosition, nbOne, size, degree, dropzeros(nilpMat))
+
+end
+
+function Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
+    length = size-diag
+
+    nilpvec = vec[1:length]
+
+    nilpMatrix = sparse(diagm(diag=>nilpvec[1:length]))
+
+    #@info nilpvec
+    return Nilp(nilpMatrix, size)
+end
+
+function Nilp(nbOne::Ti, diag::Ti, size::Ti) where{Ti <: Integer}
+    length = size-diag
+
+    nilpvec = zeros(Ti, length)
+
+    cnt = 0
+
+    while cnt < length
+        l₁ = rand(1:nbOne)
+        l₀ = rand(1:nbOne)
+
+        for i = cnt+1:l₁+cnt
+            if i <= length
+                nilpvec[i] = 1
+            end
+        end
+
+        cnt += l₀ + l₁
+
+    end
+
+    return Nilp(nilpvec, diag, size)
+end

@@ -7,27 +7,21 @@ using LinearAlgebra
 using Random
 
 size = 1000
-diag_l = -250
-diag_u = -2
-nbOne = 80
+diag_l = -800
+diag_u = -790
+nbOne = 10
 
-nilpvec = zeros(Int64, size)
+nilpvec = zeros(Int64, size-1)
 
 cnt = 0
 
-while cnt <= size
+while cnt < size-1
     l₁ = rand(1:nbOne)
     l₀ = rand(1:nbOne)
 
     for i = cnt+1:l₁+cnt
-        if i <= size
+        if i <= size-1
             nilpvec[i] = 1
-        end
-    end
-
-    for i = cnt+l₁+1:l₁+l₀+cnt
-        if i <= size
-            nilpvec[i] = 0
         end
     end
 
@@ -35,8 +29,12 @@ while cnt <= size
 
 end
 
+nilpMatrix = sparse(diagm(100=>nilpvec[1:size-100]))
+
 #@info nilpvec
-nilp = Nilp(nilpvec, size)
+#nilp = Nilp(nilpMatrix, size)
+
+nilp = Nilp(nbOne, 100, size)
 
 ## No hermitian case
 function f1(idx::Integer, size = size)
@@ -47,7 +45,7 @@ spec1 = zeros(ComplexF64, size)
 Spectrum!(spec1, f1, size)
 
 Am1 = spzeros(ComplexF64, size, size)
-initMat!(Am1, diag_l, diag_u, size; scale=0.1, sparsity=0.005)
+initMat!(Am1, diag_l, diag_u, size; scale=0.1, sparsity=0.5)
 
 @time genMat1 = nonherm(size, diag_l, diag_u, spec1, Am1, nilp)
 @info "sparsity = " nnz(genMat1) / (size * size)
@@ -71,7 +69,7 @@ Spectrum!(spec2, f2, size)
 
 
 Am2 = spzeros(Float64, size, size)
-initMat!(Am2, diag_l, diag_u, size; scale=0.1, sparsity=0.005)
+initMat!(Am2, diag_l, diag_u, size; scale=0.1, sparsity=0.5)
 @time genMat2 = nonsym(size, diag_l, diag_u, spec2, Am2, nilp)
 
 @info "sparsity = " nnz(genMat2) / (size * size)
@@ -91,7 +89,7 @@ Spectrum!(spec3, f3, size)
 
 
 Am3 = spzeros(Float64, size, size)
-initMat!(Am3, diag_l, diag_u, size; scale=0.1, sparsity=1.05)
+initMat!(Am3, diag_l, diag_u, size; scale=0.1, sparsity=.5)
 @time genMat3 = nonsym(size, diag_l, diag_u, spec3, Am3, nilp)
 
 @info "sparsity = " nnz(genMat3) / (size * size)
@@ -104,3 +102,5 @@ p4=spy(dropzeros(genMat2), legend = :none)
 
 l = @layout [a  b;c d]
 plot(p1, p2, p3, p4, layout = l)
+
+#savefig("fig/example")

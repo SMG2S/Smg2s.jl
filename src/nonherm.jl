@@ -50,16 +50,16 @@ function nonherm(
     matAop = Am
 
     fact = 1
-    fact = factorial(Tv2(2 * nilp.nbOne), 2 * nilp.nbOne)
+    fact = factorial(Tv2(2 * (nilp.degree-1)), 2 * (nilp.degree-1))
     Am = fact * Am
 
-    for k = 1 : 2 * nilp.nbOne
+    for k = 1 : 2 * (nilp.degree-1)
         matAop = matAop * nilp.nilpMat - nilp.nilpMat * matAop
         fact /= factorial(Tv2(k + 1),k+1)
         Am += fact * matAop
     end
 
-    fact = factorial(Tv2(2 * nilp.nbOne),2 * nilp.nbOne)
+    fact = factorial(Tv2(2 * (nilp.degree-1)),2 * (nilp.degree-1))
     Am = (inv(fact)) * Am
 
     return Am
