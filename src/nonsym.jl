@@ -1,3 +1,6 @@
+"""
+    nonsym(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}) where {Tv<:Complex, Ti<:Integer}
+"""
 function nonsym(
     nbOne::Ti,
     size::Ti,
@@ -15,7 +18,9 @@ function nonsym(
 
 end
 
-
+"""
+    nonsym(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv2, Ti},) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
+"""
 function nonsym(
     nbOne::Ti,
     size::Ti,
@@ -31,7 +36,10 @@ function nonsym(
 
 end
 
+"""
+    nonsym(size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv2, Ti}, nilp::Nilpotent{Ti}) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
 
+"""
 function nonsym(
     size::Ti,
     diag_l::Ti,

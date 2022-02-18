@@ -1,3 +1,7 @@
+"""
+    nonherm(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}) where {Tv<:Complex, Ti<:Integer}
+
+"""
 function nonherm(
     nbOne::Ti,
     size::Ti,
@@ -14,7 +18,10 @@ function nonherm(
 
 end
 
+"""
+    nonherm(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv, Ti}) where {Tv<:Complex, Ti<:Integer}
 
+"""
 function nonherm(
     nbOne::Ti,
     size::Ti,
@@ -32,6 +39,10 @@ function nonherm(
 
 end
 
+"""
+    nonherm(size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv, Ti}, nilp::Nilpotent{Ti}) where {Tv<:Complex, Ti<:Integer}
+
+"""
 function nonherm(
     size::Ti,
     diag_l::Ti,

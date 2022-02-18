@@ -9,6 +9,6 @@ end
 spec = zeros(ComplexF64, size)
 Spectrum!(spec, f, size)
 
-genMat = nonsym(size, diag_l, diag_u, spec, Am, nilp)
+genMat = nonsym(size, diag_l, diag_u, spec)
 
 MatrixMarket.mmwrite("genMat.mtx", genMat)

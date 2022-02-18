@@ -1,0 +1,72 @@
+# Gallery
+
+```
+size: 10000, diag_l: -7800, diag_u: -7790, nbOne: 10, nilpdiag: 1000, sp: 0.0008
+```
+
+![Pattern 1](assets/pattern1.png)
+
+```
+size: 10000, diag_l: -7800, diag_u: -7790, nbOne: 10, nilpdiag: 100, sp: 0.05
+```
+
+![Pattern 2](assets/pattern2.png)
+
+```
+size: 10000, diag_l: -800, diag_u: -790, nbOne: 10, nilpdiag: 100, sp: 0.05
+```
+
+![Pattern 3](assets/pattern3.png)
+
+```
+size: 10000, diag_l: -800, diag_u: -790, nbOne: 10, nilpdiag: 10, sp: 0.05
+```
+
+![Pattern 4](assets/pattern4.png)
+
+```
+size: 10000, diag_l: -7800, diag_u: -6000, nbOne: 10, nilpdiag: 7000, sp: 0.0008
+```
+
+![Pattern 5](assets/pattern5.png)
+
+```
+size: 10000, diag_l: -7800, diag_u: -7790, nbOne: 10, nilpdiag: 1000, sp: 0.8
+```
+
+![Pattern 6](assets/pattern6.png)
+
+```
+size: 10000, diag_l: -7800, diag_u: -7000, nbOne: 20, nilpdiag: 1000, sp: 0.005
+```
+
+![Pattern 7](assets/pattern7.png)
+
+```
+size: 10000, diag_l: -1800, diag_u: -10, nbOne: 1000, nilpdiag: 1000, sp: 0.0005
+```
+
+![Pattern 8](assets/pattern8.png)
+
+```
+size: 10000, diag_l: -9800, diag_u: -6800, nbOne: 10, nilpdiag: 7000, sp: 0.0005
+```
+
+![Pattern 9](assets/pattern9.png)
+
+```
+size: 10000, diag_l: -9800, diag_u: -6800, nbOne: 20, nilpdiag: 1500, sp: 0.004
+```
+
+![Pattern 10](assets/pattern10.png)
+
+```
+size: 10000, diag_l: -9800, diag_u: -6800, nbOne: 70, nilpdiag: 1500, sp: 0.004
+```
+![Pattern 11](assets/pattern11.png)
+
+```
+size: 10000, diag_l: -9900, diag_u: -800, nbOne: 70, nilpdiag: 3500, sp: 0.0008
+```
+
+![Pattern 12](assets/pattern12.png)

@@ -1,5 +1,4 @@
 struct Nilpotent{Ti<:Integer}
-    diagPosition::Ti
     nbOne::Ti
     size::Ti
     degree::Ti
@@ -15,9 +14,11 @@ function factorial(num::Tv, depth::Ti) where {Tv <: Real, Ti <: Integer}
     return fact
 end
 
+"""
+    Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
+"""
 function Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
 
-    diagPosition::Ti = 2
     degree::Ti = nbOne + 1
 
     if nbOne > size - 1
@@ -32,11 +33,13 @@ function Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
         end
     end
 
-    return Nilpotent(diagPosition, nbOne, size, degree, nilpMat)
+    return Nilpotent(nbOne, size, degree, nilpMat)
 end
 
+"""
+    Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
+"""
 function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
-    diagPosition::Ti = 2
 
     #check
     for i = 1:size-1
@@ -67,13 +70,15 @@ function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
         nilpMat[i, i+1] = vector[i]
     end
 
-    return Nilpotent(diagPosition, nbOne, size, degree, dropzeros(nilpMat))
+    return Nilpotent(nbOne, size, degree, dropzeros(nilpMat))
 
 end
 
+"""
+    Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
+"""
 function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
 
-    diagPosition::Ti = 2
     nbOne::Ti = 1
     degree::Ti = 1
 
@@ -93,10 +98,13 @@ function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where
 
     @info "the degree of given nilpotent matrix is: " degree
 
-    return Nilpotent(diagPosition, nbOne, size, degree, dropzeros(nilpMat))
+    return Nilpotent(nbOne, size, degree, dropzeros(nilpMat))
 
 end
 
+"""
+    Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
+"""
 function Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
     length = size-diag
 
@@ -108,6 +116,9 @@ function Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
     return Nilp(nilpMatrix, size)
 end
 
+"""
+    Nilp(nbOne::Ti, diag::Ti, size::Ti) where{Ti <: Integer}
+"""
 function Nilp(nbOne::Ti, diag::Ti, size::Ti) where{Ti <: Integer}
     length = size-diag
 

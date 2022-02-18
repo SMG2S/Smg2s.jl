@@ -1,4 +1,7 @@
+"""
+    initMat!(matrix::SparseMatrixCSC{Tv, Ti}, diag_l::Ti, diag_u::Ti, size::Ti; scale::Real = 1.0, shift::Real = 0.0, sparsity::Real = 0.9) where {Tv<:Complex, Ti<:Integer}
 
+"""
 function initMat!(
     matrix::SparseMatrixCSC{Tv, Ti},
     diag_l::Ti,
@@ -43,6 +46,9 @@ function initMat!(
     end
 end
 
+"""
+    initMat!(matrix::SparseMatrixCSC{Tv, Ti}, diag_l::Ti, diag_u::Ti, size::Ti; scale::Real = 1.0, shift::Real = 0.0, sparsity::Real = 0.9) where {Tv<:Real, Ti<:Integer}
+"""
 function initMat!(
     matrix::SparseMatrixCSC{Tv, Ti},
     diag_l::Ti,
