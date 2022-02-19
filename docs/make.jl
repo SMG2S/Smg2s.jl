@@ -13,12 +13,12 @@ makedocs(
                 "Home" => "index.md",
                 "User Guide" => Any[
                         "Getting Started" => "getting_started.md"
-                        "Examples" => "examples.md"
                         "Customization" => "custorm.md"
+                        "Examples" => "examples.md"
                 ],
-                "Gallery: Some Sparsity Patterns" => "gallery.md",
+                "Gallery: Sparsity Patterns" => "gallery.md",
                 "Citing SMG2S" => "citing.md",
-                "API Reference" => "api.md"
+                "Licence" => "licence.md"
         ]
 
 

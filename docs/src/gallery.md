@@ -1,4 +1,4 @@
-# Gallery
+# Gallery: Some Sparsity Patterns
 
 ```
 size: 10000, diag_l: -7800, diag_u: -7790, nbOne: 10, nilpdiag: 1000, sp: 0.0008

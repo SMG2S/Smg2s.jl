@@ -49,7 +49,3 @@ The following people are involved in the development of SMG2S:
 If this project is useful for your work please consider
 * [Citing](citing.md) the relevant paper
 * Leaving a star on the [GitHub repository](https://github.com/SMG2S/SMG2S.jl)
-
-## Licence
-
-SMG2S.jl is licensed under the MIT License. For more details click [here](https://github.com/SMG2S/SMG2S.jl/blob/main/LICENSE).
