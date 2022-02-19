@@ -67,4 +67,4 @@ If this project is useful for your work please consider
 
 ## Contact
 
-Any questions? Just send a email to [us](mailto:xin.wu@fz-juelich.de).
+Any questions? Just send an email to [us](mailto:xin.wu@fz-juelich.de).
