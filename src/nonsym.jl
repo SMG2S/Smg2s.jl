@@ -1,5 +1,8 @@
 """
     nonsym(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}) where {Tv<:Complex, Ti<:Integer}
+
+Generate a non symmetric matrix with default nilpotent matrix and default initialization of matrix.
+
 """
 function nonsym(
     nbOne::Ti,
@@ -20,6 +23,9 @@ end
 
 """
     nonsym(nbOne::Ti, size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv2, Ti},) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
+
+Generate a non symmetric matrix with default nilpotent matrix and user-provided initialization of matrix.
+
 """
 function nonsym(
     nbOne::Ti,
@@ -38,6 +44,8 @@ end
 
 """
     nonsym(size::Ti, diag_l::Ti, diag_u::Ti, spectrum::AbstractVector{Tv}, Am::SparseMatrixCSC{Tv2, Ti}, nilp::Nilpotent{Ti}) where {Tv<:Complex, Tv2<:Real, Ti<:Integer}
+
+Generate a non symmetric matrix with user-provided nilpotent matrix and initialization of matrix.
 
 """
 function nonsym(
