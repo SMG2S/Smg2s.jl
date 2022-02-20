@@ -1,15 +1,22 @@
-__SMG2S.jl__ is a Julia implementation of the __Scalable Matrix Generation with Given Spectrum (SMG2S)__. SMG2S was initially implemented based MPI (Message Passing Interface) and C++, which is able to generate very large-scale non-Hermitian/Symmetric matrices on modern supercomputers. For more details about this parallel implementation of SMG2S, click [here](https://github.com/SMG2S/SMG2S). The main target of the MPI/C++ implementation is its parallel performance on supercomputers, thus a lot constraints
-were artificially posed, which leave very few space to be able to be customized by the users.
+__SMG2S.jl__ is a Julia implementation of the __Scalable Matrix Generation with Given Spectrum (SMG2S)__. SMG2S was initially implemented based MPI (Message Passing Interface) and C++, which is able to generate very large-scale non-Hermitian/Symmetric __Sparse__ matrices in parallel on modern supercomputers. For more details about this parallel implementation of SMG2S, click [here](https://github.com/SMG2S/SMG2S).  
 
-Different with the MPI/C++ version, this Julia implementation of SMG2S is introduced which is try to give as much as possible room to the users, who generate the matrices with different sparsity patterns.  
+The idea of creating a sparse matrix generator came from the fact that the spectrum of matrix have large impacts on the convergence behaviour of iterative linear solvers, such as the [Krylov subspace method](https://en.wikipedia.org/wiki/Krylov_subspace). Generating very large sparse with given spectrum would be beneficial both for the study/research on the numerical methods and benchmarking of the parallel performance of existing iterative solvers on supercomputers.
+
+The main consideration of the MPI/C++ implementation was its parallel efficiency on supercomputers, thus a lot constraints were artificially posed, which leave very few space to be customized by the users. This results in a very limited types of sparsity patterns of generated matrices.
+
+However, the sparsity patterns are in fact really important for the evaluation the performance of algorithms of sparse matrices, especially their parallel efficiency. Different sparsity patterns can results in very different parallel performance which requires specific implementation and optimization.     
+
+Therefore, different with the MPI/C++ version, SMG2S.jl is introduced which is try to give as much as possible room to the users to generate the matrices with a diverse types of sparsity patterns.
+
+👉  [[Gallery of some generated sparsity patterns]](gallery.md)
 
 ## Features
 
-- Both **Non-Hermitian** and **Non-Symmetric**
-- **Sparse** and **non-trivial**
-- **Efficiency**: it is able to efficiently generate a very high dimension matrices
-- **Given Spectrum**: their spectra must be known and can be customized
-- **Controllable** Sparsity Patterns
+- Support of generating of both **Non-Hermitian** and **Non-Symmetric** sparse matrix
+- The generated matrices are naturally **Sparse** with **non-trivial** sparsity pattern
+- **Given Spectrum**: the spectrum of generated matrix is the same as the one specified by the users
+- Sparsity Patterns is **Controllable** (in some sense)
+- it is able to very **efficiently** generate high dimension matrices
 
 ![](assets/example.png)
 
@@ -56,14 +63,20 @@ genMat = nonsym(nbOne, size, diag_l, diag_u, spec)
 ## Credits
 
 The following people are involved in the development of SMG2S:
-- [Xinzhe Wu](https://github.com/brunowu) (main development and algorithms)
-- [Serge Petiton](https://www.cristal.univ-lille.fr/~petiton/) (math and algorithms)
+- [Xinzhe Wu](https://www.fz-juelich.de/SharedDocs/Personen/IAS/JSC/EN/staff/wu_x.html?nn=362224) (main development and algorithms)
+- Serge G. Petiton (maths and algorithms)
 - Hervé Gachlier (maths)
 - ...
 
 If this project is useful for your work please consider
 * [Citing](citing.md) the relevant paper
 * Leaving a star on the [GitHub repository](https://github.com/SMG2S/SMG2S.jl)
+
+## Contributing
+
+We always would like to re-factor the MPI/C++ version following the scheme in SMG2S.jl. However, we lack of man power, because
+the current contributors can only work on that during very limited part time. If you have intention to take part in this project, feel
+free to contact [us](mailto:xin.wu@fz-juelich.de).
 
 ## Contact
 

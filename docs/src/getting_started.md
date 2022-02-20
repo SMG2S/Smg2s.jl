@@ -40,11 +40,11 @@ The initial matrix ``M_0`` is selected as a sparse low triangular matrices, whos
 
 ## Building Blocks
 
-There are three important building blocks, which should be taken care of (in the other words, customized) by the users.
+There are three important building blocks, which should be taken care of (in another words, customized) by the users.
 
 ### Spectrum specified by Users
 
-These are different constraints for the spectrum provided by users to generate targeting matrices, especially for the non-symmetric case.
+Constraints are posed for the spectrum provided by users to generate targeting matrices, especially for the non-symmetric case.
 
 #### Non-Hermitian matrix
 
@@ -57,8 +57,8 @@ spectrum = [1,2+i,3-3i,4,5+i, 6-21i, 7, 8 ]
 #### Non-Symmetric matrix
 
 For the non-Symmetric case, the spectrum should also be specified as a `n`-element vector with real and/or complex entries (eigenvalues). However, for the entries with
-complex number, there are should also exist the conjugate pairs. For example, if the first complex entry is ``a+bi``, either its left or right neighboring entry should
-be its conjugate ``a-bi``. This constraint is posed because of the fact, the eigenvalues of non-symmetric matrices with real values always come out as conjugate pairs, if they are complex. Voilà an example:
+complex number, they should appear as conjugate pairs. For example, if the first complex entry is ``a+bi``, either its left or right neighboring entry should
+be its conjugate ``a-bi``. This constraint is posed because of the fact that the eigenvalues of non-symmetric matrices with real values always come out as conjugate pairs, if they are complex. Voilà an example:
 
 ```math
 spectrum = [1, 2-i, 2+i, 3-2i, 3+2i, -5, 4+9i, 4-9i]
@@ -120,7 +120,7 @@ whose eigenvalues are exactly ``a-|b|i`` and ``a+|b|i``.
 
 ### Generation of Nilpotent Matrix
 
-A simple nilpotent matrix ``A`` can be a sparse matrix whose only one upper diagonal of indexing ``diag`` are non-zeros, which is filled with continuous ``1`` and ``0``. The maximum of continuous can be
+A simple nilpotent matrix ``A`` can be a sparse matrix whose only one upper diagonal of indexing ``diag`` are non-zeros, which is filled with continuous ``1`` and ``0``. The maximum of continuous ``1`` can be
 fixed as a user-specific value ``nbOne``, this will leads to ``A^i=0`` in limited number of steps. Here are an example of nilpotent matrix with ``diag=1`` and ``nbOne=3``:
 
 ```math
@@ -145,4 +145,4 @@ M_0=\begin{bmatrix}
 !!! note
      - Initialization of ``M_0`` and generation of different nilpotent matrices will result in sparse matrices with different sparsity patterns (see [Gallery: Sparsity Patterns](gallery.md)),
      - Therefore SMG2S.jl leaves as much as possible room to the users for the customization.
-     - Meanwhile, we provides also some default routines for them, which are free to be used by the users if they don't want to customize by themselves.
+     - Meanwhile, we provides also some default routines for them, which are free to be used by the users without concerning always about customizing everything by themselves.

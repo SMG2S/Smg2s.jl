@@ -39,10 +39,16 @@ end
 """
     Spectrum!(spec::AbstractVector{Tv}, vec::AbstractVector{Tv}, size::Ti) where {Tv<:Complex, Ti<:Integer}
 
-Set the spectrum from user provided vector.
+Set the spectrum from user provided vector. In fact, this function only check if the size of given spectrum vector is large enough.
+And they copy the first `size` elements of `vec` into `spec`.
 
 """
 function Spectrum!(spec::AbstractVector{Tv}, vec::AbstractVector{Tv}, size::Ti) where {Tv<:Complex, Ti<:Integer}
+
+    if size(vec, 1) < size
+        error("the provided spectrum vector is too small compared to the matrix to be generated.")
+    end
+
     for i = 1:size
         spec[i] = Tv(vec[i])
     end

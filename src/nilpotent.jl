@@ -128,7 +128,7 @@ end
     Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
 
 Create a nilpotent matrix whose dimension is `size` from user-provided sparse matrix `matrix`.
-This matrix should be nilpotent, and its nilpotency should not larger than `80`. Before generation,
+This matrix should be nilpotent, and its nilpotency should not be larger than `80`. Before generation,
 SMG2S.jl will check if the user-provided matrix is nilpotent matrix with nilpotency no larger than `80`.
 If it doesn't satisfy any of the two, an error message will appear.
 
@@ -149,6 +149,19 @@ Nilpotent{Int64}(1, 4, 4,
   ⋅    ⋅   1.0  1.0
   ⋅    ⋅    ⋅   1.0
   ⋅    ⋅    ⋅    ⋅ )
+```
+
+## Examples
+```julia
+julia> nilpMatrix = sparse([1. 1 1 0; 0 0 1 1 ; 0 0 0 1 ; 0 0 0 0])
+4×4 SparseMatrixCSC{Float64, Int64} with 6 stored entries:
+ 1.0  1.0  1.0   ⋅
+  ⋅    ⋅   1.0  1.0
+  ⋅    ⋅    ⋅   1.0
+  ⋅    ⋅    ⋅    ⋅
+
+julia> SMG2S.Nilp(nilpMatrix,4)
+ERROR: the given nilpotent matrix is invalid
 ```
 
 """
@@ -230,9 +243,16 @@ nilpotent matrix to be generated, and `nbOne` refers to the maximum number of co
 diagonal of generated nilptent matrix. The offset of non-zero diagonal is determined by
 the parameter `diag`.
 
-The non-zero diagonal is generated as: 1. randomly generating a interger number in the interval `[1, nbOne]`,
-2. this number determines the number of continous `1` for this time of sampling, 3. then generating another within
-the same interval, which determines the number of continuous `0`, 4) then re-samling for a new sequence of continuous `1` ...
+The non-zero diagonal is generated as:
+1. randomly generating an interger number in the interval `[1, nbOne]`
+
+2. this number determines the number of continous `1` for this time of sampling
+
+3. then generating another within the same interval, which determines the number of continuous `0`
+
+4. then re-samling for a new sequence of continuous `1`
+
+5. ...
 
 ## Examples
 ```julia
