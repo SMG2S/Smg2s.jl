@@ -20,7 +20,7 @@ Therefore, different with the MPI/C++ version, SMG2S.jl is introduced which is t
 - Sparsity Patterns is **Controllable** (in some sense)
 - it is able to very **efficiently** generate high dimension matrices
 
-![Comparison of generated spectrum with given spectrum](fig/example.png)
+![Comparison of generated spectrum with given spectrum](docs/assets/example.png)
 
 ## Installation
 
