@@ -1,11 +1,11 @@
 using Documenter
 using Revise
-using SMG2S
+using Smg2s
 using SparseArrays
 
 makedocs(
-        modules = [SMG2S],
-        sitename="SMG2S.jl",
+        modules = [Smg2s],
+        sitename="Smg2s.jl",
         format = Documenter.HTML(
               prettyurls = get(ENV, "CI", nothing) == "true",
         ),
@@ -17,7 +17,7 @@ makedocs(
                         "Examples" => "examples.md"
                 ],
                 "Gallery: Sparsity Patterns" => "gallery.md",
-                "Citing SMG2S" => "citing.md",
+                "Citing Smg2s" => "citing.md",
                 "Licence" => "licence.md"
         ]
 
@@ -25,4 +25,4 @@ makedocs(
 )
 
 deploydocs(
-    repo = "https://github.com/SMG2S/SMG2S.jl")
+    repo = "https://github.com/Smg2s/Smg2s.jl")

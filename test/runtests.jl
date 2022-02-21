@@ -1,4 +1,4 @@
-using SMG2S, Test
+using Smg2s, Test
 
 include("./nilp_tests.jl")
 include("./init_tests.jl")

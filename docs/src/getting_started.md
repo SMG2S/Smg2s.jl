@@ -116,7 +116,7 @@ a & |b| \\
 whose eigenvalues are exactly ``a-|b|i`` and ``a+|b|i``.
 
 !!! note
-    For the initialization of ``M_0``, SMG2S.jl will take care of setting the given spectrum. The user only needs to customize the others entries of its lower triangular part.
+    For the initialization of ``M_0``, Smg2s.jl will take care of setting the given spectrum. The user only needs to customize the others entries of its lower triangular part.
 
 ### Generation of Nilpotent Matrix
 
@@ -144,5 +144,5 @@ M_0=\begin{bmatrix}
 
 !!! note
      - Initialization of ``M_0`` and generation of different nilpotent matrices will result in sparse matrices with different sparsity patterns (see [Gallery: Sparsity Patterns](gallery.md)),
-     - Therefore SMG2S.jl leaves as much as possible room to the users for the customization.
+     - Therefore Smg2s.jl leaves as much as possible room to the users for the customization.
      - Meanwhile, we provides also some default routines for them, which are free to be used by the users without concerning always about customizing everything by themselves.

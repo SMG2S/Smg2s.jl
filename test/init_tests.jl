@@ -1,4 +1,4 @@
-using SMG2S, Test, SparseArrays, LinearAlgebra
+using Smg2s, Test, SparseArrays, LinearAlgebra
 
 @testset "Initialization of Matrix" begin
     @testset "Init 1" begin

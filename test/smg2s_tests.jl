@@ -1,4 +1,4 @@
-using SMG2S, Test, SparseArrays, LinearAlgebra
+using Smg2s, Test, SparseArrays, LinearAlgebra
 
 #Define size of matrix to be generated
 n = 20

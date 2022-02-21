@@ -1,4 +1,4 @@
-module SMG2S
+module Smg2s
 
 using LinearAlgebra
 using SparseArrays
