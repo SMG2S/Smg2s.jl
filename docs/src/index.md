@@ -1,4 +1,6 @@
-__SMG2S.jl__ is a Julia implementation of the __Scalable Matrix Generation with Given Spectrum (SMG2S)__. SMG2S was initially implemented based MPI (Message Passing Interface) and C++, which is able to generate very large-scale non-Hermitian/Symmetric __Sparse__ matrices in parallel on modern supercomputers. For more details about this parallel implementation of SMG2S, click [here](https://github.com/SMG2S/SMG2S).  
+# SMG2S.jl: Sparse Matrix Generator with Given Spectrum
+
+__SMG2S.jl__ is a Julia implementation of the __Sparse Matrix Generator with Given Spectrum (SMG2S)__. SMG2S was initially implemented based MPI (Message Passing Interface) and C++, which is able to generate very large-scale non-Hermitian/Symmetric __Sparse__ matrices in parallel on modern supercomputers. For more details about this parallel implementation of SMG2S, click [here](https://github.com/SMG2S/SMG2S).  
 
 The idea of creating a sparse matrix generator came from the fact that the spectrum of matrix have large impacts on the convergence behaviour of iterative linear solvers, such as the [Krylov subspace method](https://en.wikipedia.org/wiki/Krylov_subspace). Generating very large sparse with given spectrum would be beneficial both for the study/research on the numerical methods and benchmarking of the parallel performance of existing iterative solvers on supercomputers.
 
