@@ -1,6 +1,8 @@
 struct Nilpotent{Ti<:Integer}
     size::Ti
     degree::Ti
+    offset::Ti
+    nilpVec::AbstractVector
     nilpMat::SparseMatrixCSC
 end
 
@@ -47,14 +49,17 @@ function Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
     end
 
     nilpMat = spzeros(size, size)
+    nilpVec = zeros(size-1)
 
     for i = 1:size-1
         if (i % (nbOne + 1)) != 0
             nilpMat[i, i+1] = 1.0
+            nilpVec[i] = 1.0
         end
     end
 
-    return Nilpotent(size, degree, nilpMat)
+    offset = 1
+    return Nilpotent(size, degree, offset, nilpVec, nilpMat)
 end
 
 """
@@ -119,72 +124,9 @@ function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
         nilpMat[i, i+1] = vector[i]
     end
 
-    return Nilpotent(size, degree, dropzeros(nilpMat))
+    offset = 1
 
-end
-
-"""
-    Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
-
-Create a nilpotent matrix whose dimension is `size` from user-provided sparse matrix `matrix`.
-This matrix should be nilpotent, and its nilpotency should not be larger than `80`. Before generation,
-SMG2S.jl will check if the user-provided matrix is nilpotent matrix with nilpotency no larger than `80`.
-If it doesn't satisfy any of the two, an error message will appear.
-
-## Examples
-```jldoctest; setup = :(using SMG2S; using SparseArrays)
-julia> nilpMatrix = sparse([0. 1 1 0; 0 0 1 1 ; 0 0 0 1 ; 0 0 0 0])
-4×4 SparseMatrixCSC{Float64, Int64} with 5 stored entries:
-  ⋅   1.0  1.0   ⋅
-  ⋅    ⋅   1.0  1.0
-  ⋅    ⋅    ⋅   1.0
-  ⋅    ⋅    ⋅    ⋅
-
-julia> SMG2S.Nilp(nilpMatrix,4)
-┌ Info: the degree of given nilpotent matrix is:
-└   degree = 4
-Nilpotent{Int64}(1, 4, 4,
-  ⋅   1.0  1.0   ⋅
-  ⋅    ⋅   1.0  1.0
-  ⋅    ⋅    ⋅   1.0
-  ⋅    ⋅    ⋅    ⋅ )
-```
-
-## Examples
-```julia
-julia> nilpMatrix = sparse([1. 1 1 0; 0 0 1 1 ; 0 0 0 1 ; 0 0 0 0])
-4×4 SparseMatrixCSC{Float64, Int64} with 6 stored entries:
- 1.0  1.0  1.0   ⋅
-  ⋅    ⋅   1.0  1.0
-  ⋅    ⋅    ⋅   1.0
-  ⋅    ⋅    ⋅    ⋅
-
-julia> SMG2S.Nilp(nilpMatrix,4)
-ERROR: the given nilpotent matrix is invalid
-```
-
-"""
-function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
-
-    degree::Ti = 1
-
-    nilpMat = matrix
-
-    while degree <= maxdegree
-        if matrix == spzeros(Tv, size, size)
-            break
-        end
-        matrix *= nilpMat
-        degree += 1
-    end
-
-    if degree > maxdegree
-        error("the given nilpotent matrix is invalid")
-    end
-
-    @info "the degree of given nilpotent matrix is: " degree
-
-    return Nilpotent(size, degree, dropzeros(nilpMat))
+    return Nilpotent(size, degree, offset, vector[1:size-1], dropzeros(nilpMat))
 
 end
 
@@ -251,10 +193,10 @@ function Nilp(vec::AbstractVector, diag::Ti, size::Ti; maxdegree::Ti=80) where{T
     if degree > maxdegree
         error("the given nilpotent matrix is invalid")
     end
-    
+
     @info "the degree of given nilpotent matrix is: " degree
 
-    return Nilpotent(size, degree, dropzeros(nilpMatrix))
+    return Nilpotent(size, degree, diag, nilpvec, dropzeros(nilpMatrix))
 end
 
 """
@@ -321,4 +263,48 @@ function Nilp(nbOne::Ti, diag::Ti, size::Ti) where{Ti <: Integer}
     end
 
     return Nilp(nilpvec, diag, size)
+end
+
+"""
+    NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
+    Nilpotent x M
+"""
+
+function NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
+    rowind, colind, val = findnz(M)
+    offset = nilp.offset
+    size = nilp.size
+    zerosMask = findall(x -> x == 0 , nilp.nilpVec)
+    mask =  findall(x -> (x > offset) && !(x-offset in zerosMask), rowind)
+
+    rAm = rowind[mask]
+    cAm = colind[mask]
+    rAm = rAm .- offset
+    vAm = val[mask]
+
+    prod = sparse(rAm, cAm, vAm, size, size)
+
+    return prod
+end
+
+"""
+    NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
+    M x Nilpotent
+"""
+function MxNilp(M::AbstractSparseMatrix, nilp::Nilpotent)
+    rowind, colind, val = findnz(M)
+    offset = nilp.offset
+    size = nilp.size
+
+    zerosMask = findall(x -> x == 0 , nilp.nilpVec)
+    mask =  findall(x -> (x <= size - offset) && !(x in zerosMask) , colind)
+
+    rmA = rowind[mask]
+    cmA = colind[mask]
+    cmA = cmA .+ offset
+    vmA =  val[mask]
+
+    prod = sparse(rmA, cmA, vmA, size, size)
+
+    return prod
 end

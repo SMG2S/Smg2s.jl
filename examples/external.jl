@@ -46,9 +46,9 @@ while cnt < n-1
 
 end
 
-nilpMatrix = sparse(diagm(10=>nilpvec[1:n-10]))
+#nilpMatrix = sparse(diagm(10=>nilpvec[1:n-10]))
 
-nilp = Nilp(nilpMatrix, n)
+nilp = Nilp(nilpvec, 10, n)
 
 ##v1.txt case: non-symmetric matrix
 spec1 = zeros(ComplexF64, n)

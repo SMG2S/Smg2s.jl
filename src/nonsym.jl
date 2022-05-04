@@ -94,7 +94,8 @@ function nonsym(
     Am = fact * Am
 
     for k = 1 : 2 * (nilp.degree-1)
-        matAop = matAop * nilp.nilpMat - nilp.nilpMat * matAop
+        #matAop = matAop * nilp.nilpMat - nilp.nilpMat * matAop
+        matAop = MxNilp(matAop, nilp) - NilpxM(matAop, nilp)
         fact /= factorial(Tv2(k + 1),k+1)
         Am += fact * matAop
     end

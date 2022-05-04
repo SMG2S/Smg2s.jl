@@ -32,9 +32,10 @@ while cnt < n-1
 
 end
 
-nilpMatrix = sparse(diagm(nilpdiag=>nilpvec[1:n-nilpdiag]))
+#nilpMatrix = sparse(diagm(nilpdiag=>nilpvec[1:n-nilpdiag]))
 
-nilp = Nilp(nilpMatrix, n)
+#nilp = Nilp(nilpMatrix, n)
+nilp = Nilp(nilpvec, nilpdiag, n)
 
 function f(idx::Integer, n = n)
     return 10 * cos(((idx-1) / 2) * 2 * π / n) + 5
