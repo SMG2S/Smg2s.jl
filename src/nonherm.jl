@@ -164,7 +164,7 @@ function nonherm(
 ) where {Tv<:Complex, Ti<:Integer}
 
     Tv2 = eltype(real(spectrum[1]))
-    nbOne = nilp.nbOne
+    #nbOne = nilp.nbOne
     for i = 1:size
         Am[i, i] = spectrum[i]
     end

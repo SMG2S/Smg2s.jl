@@ -1,5 +1,4 @@
 struct Nilpotent{Ti<:Integer}
-    nbOne::Ti
     size::Ti
     degree::Ti
     nilpMat::SparseMatrixCSC
@@ -55,7 +54,7 @@ function Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
         end
     end
 
-    return Nilpotent(nbOne, size, degree, nilpMat)
+    return Nilpotent(size, degree, nilpMat)
 end
 
 """
@@ -120,7 +119,7 @@ function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
         nilpMat[i, i+1] = vector[i]
     end
 
-    return Nilpotent(nbOne, size, degree, dropzeros(nilpMat))
+    return Nilpotent(size, degree, dropzeros(nilpMat))
 
 end
 
@@ -167,7 +166,6 @@ ERROR: the given nilpotent matrix is invalid
 """
 function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where{Tv <: Real, Ti <: Integer}
 
-    nbOne::Ti = 1
     degree::Ti = 1
 
     nilpMat = matrix
@@ -186,16 +184,19 @@ function Nilp(matrix::SparseMatrixCSC{Tv, Ti} ,size::Ti; maxdegree::Ti=80) where
 
     @info "the degree of given nilpotent matrix is: " degree
 
-    return Nilpotent(nbOne, size, degree, dropzeros(nilpMat))
+    return Nilpotent(size, degree, dropzeros(nilpMat))
 
 end
 
 """
-    Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
+    Nilp(vec::AbstractVector, diag::Ti, size::Ti; maxdegree::Ti=80) where{Ti <: Integer}
 
 Create a nilpotent matrix whose dimension is `size` from user-provided vector. The
 non-zero diagonal of nilpotent matrix is set as the one with offset `diag`. Therefore, the size
-of given `vector` should at least be `size-diag`.
+of given `vector` should at least be `size-diag`. This matrix should be nilpotent, and its nilpotency
+should not be larger than `80`. Before generation, SMG2S.jl will check if the user-provided matrix
+is nilpotent matrix with nilpotency no larger than `80`. If it doesn't satisfy any of the two,
+an error message will appear.
 
 ## Examples
 ```jldoctest; setup = :(using SMG2S; using SparseArrays)
@@ -224,15 +225,36 @@ Nilpotent{Int64}(1, 8, 3,
 
 ```
 """
-function Nilp(vec::AbstractVector, diag::Ti, size::Ti) where{Ti <: Integer}
+function Nilp(vec::AbstractVector, diag::Ti, size::Ti; maxdegree::Ti=80) where{Ti <: Integer}
     length = size-diag
 
     nilpvec = vec[1:length]
 
     nilpMatrix = sparse(diagm(diag=>nilpvec[1:length]))
 
-    #@info nilpvec
-    return Nilp(nilpMatrix, size)
+    vectmps = nilpvec
+
+    diag_offset = diag
+    degree = 1
+    while degree <= maxdegree
+        for i in 1:(size-diag - diag_offset)
+            vectmps[i] = nilpvec[i] * vectmps[i+diag]
+        end
+        vectmps = vectmps[1:(size-diag - diag_offset)]
+        degree = degree + 1
+        if all(vectmps .== 0)
+            break
+        end
+        diag_offset = diag_offset + diag
+    end
+
+    if degree > maxdegree
+        error("the given nilpotent matrix is invalid")
+    end
+    
+    @info "the degree of given nilpotent matrix is: " degree
+
+    return Nilpotent(size, degree, dropzeros(nilpMatrix))
 end
 
 """
