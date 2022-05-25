@@ -1,11 +1,14 @@
 using Smg2s, SparseArrays, LinearAlgebra, Test
 
-size = 8
-offset = 3
-vec=[1; 1; 0; 1; 1; 1; 0]
-nilp = Nilp(vec, offset, size)
+dim = 5000
+nzeros = 10
+nilp = Nilp(10, dim)
 #nilp.nilpMat
-M=sprandn(size, size, 0.75)
+M=sprandn(dim, dim, 0.25)
 
-@test NilpxM(M, nilp) == nilp.nilpMat*M
-@test MxNilp(M, nilp) == M*nilp.nilpMat
+@test MNilpM(M, nilp) == M*NilpMat(nilp) - NilpMat(nilp)*M
+
+@time MNilpM(M, nilp)
+@time M*NilpMat(nilp) - NilpMat(nilp)*M
+
+@info "done"

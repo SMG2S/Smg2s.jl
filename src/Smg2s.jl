@@ -8,7 +8,7 @@ export Nilpotent, Nilp
 export Spectrum!, checkSpectrum
 export initMat!
 export nonherm, nonsym
-export NilpxM, MxNilp
+export NilpxM, MxNilp, MNilpM, NilpMat
 
 include("nilpotent.jl")
 include("spectrum.jl")

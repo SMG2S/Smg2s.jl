@@ -3,7 +3,6 @@ struct Nilpotent{Ti<:Integer}
     degree::Ti
     offset::Ti
     nilpVec::AbstractVector
-    nilpMat::SparseMatrixCSC
 end
 
 function factorial(num::Tv, depth::Ti) where {Tv <: Real, Ti <: Integer}
@@ -48,18 +47,16 @@ function Nilp(nbOne::Ti, size::Ti) where {Ti<:Integer}
         error("for constructing niloptent matrix, nbOne should ≦ size - 1 ")
     end
 
-    nilpMat = spzeros(size, size)
     nilpVec = zeros(size-1)
 
     for i = 1:size-1
         if (i % (nbOne + 1)) != 0
-            nilpMat[i, i+1] = 1.0
             nilpVec[i] = 1.0
         end
     end
 
     offset = 1
-    return Nilpotent(size, degree, offset, nilpVec, nilpMat)
+    return Nilpotent(size, degree, offset, nilpVec)
 end
 
 """
@@ -118,15 +115,9 @@ function Nilp(vector::AbstractVector, size::Ti) where {Ti<:Integer}
 
     degree::Ti = nbOne + 1
 
-    nilpMat = spzeros(size, size)
-
-    for i = 1:size-1
-        nilpMat[i, i+1] = vector[i]
-    end
-
     offset = 1
 
-    return Nilpotent(size, degree, offset, vector[1:size-1], dropzeros(nilpMat))
+    return Nilpotent(size, degree, offset, vector[1:size-1])
 
 end
 
@@ -172,8 +163,6 @@ function Nilp(vec::AbstractVector, diag::Ti, size::Ti; maxdegree::Ti=80) where{T
 
     nilpvec = vec[1:length]
 
-    nilpMatrix = sparse(diagm(diag=>nilpvec[1:length]))
-
     vectmps = nilpvec
 
     diag_offset = diag
@@ -196,7 +185,7 @@ function Nilp(vec::AbstractVector, diag::Ti, size::Ti; maxdegree::Ti=80) where{T
 
     @info "the degree of given nilpotent matrix is: " degree
 
-    return Nilpotent(size, degree, diag, nilpvec, dropzeros(nilpMatrix))
+    return Nilpotent(size, degree, diag, nilpvec)
 end
 
 """
@@ -266,10 +255,17 @@ function Nilp(nbOne::Ti, diag::Ti, size::Ti) where{Ti <: Integer}
 end
 
 """
+    NilpMat(nilp::Nilpotent)
+    Explicitly construct the nilpotent matrix
+"""
+function NilpMat(nilp::Nilpotent)
+    return spdiagm(nilp.offset => sparse(nilp.nilpVec))
+end
+
+"""
     NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
     Nilpotent x M
 """
-
 function NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
     rowind, colind, val = findnz(M)
     offset = nilp.offset
@@ -277,13 +273,7 @@ function NilpxM(M::AbstractSparseMatrix, nilp::Nilpotent)
     zerosMask = findall(x -> x == 0 , nilp.nilpVec)
     mask =  findall(x -> (x > offset) && !(x-offset in zerosMask), rowind)
 
-    rAm = rowind[mask]
-    cAm = colind[mask]
-    rAm = rAm .- offset
-    vAm = val[mask]
-
-    prod = sparse(rAm, cAm, vAm, size, size)
-
+    prod = sparse(rowind[mask] .- offset, colind[mask], val[mask], size, size)
     return prod
 end
 
@@ -299,12 +289,20 @@ function MxNilp(M::AbstractSparseMatrix, nilp::Nilpotent)
     zerosMask = findall(x -> x == 0 , nilp.nilpVec)
     mask =  findall(x -> (x <= size - offset) && !(x in zerosMask) , colind)
 
-    rmA = rowind[mask]
-    cmA = colind[mask]
-    cmA = cmA .+ offset
-    vmA =  val[mask]
-
-    prod = sparse(rmA, cmA, vmA, size, size)
-
+    prod = sparse(rowind[mask], colind[mask].+ offset, val[mask], size, size)
     return prod
+end
+
+function MNilpM(M::AbstractSparseMatrix, nilp::Nilpotent)
+    rowind, colind, val = findnz(M)
+    offset = nilp.offset
+    size = nilp.size
+    zerosMask = findall(x -> x == 0 , nilp.nilpVec)
+    rmask =  findall(x -> (x > offset) && !(x-offset in zerosMask), rowind)
+    cmask =  findall(x -> (x <= size - offset) && !(x in zerosMask) , colind)
+
+    p1 = sparse(rowind[cmask], colind[cmask].+ offset, val[cmask], size, size)
+    p2 = sparse(rowind[rmask] .- offset, colind[rmask], val[rmask], size, size)
+
+    return p1-p2
 end

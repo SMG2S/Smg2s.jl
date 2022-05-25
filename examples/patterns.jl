@@ -46,7 +46,7 @@ Spectrum!(spec, f, n)
 
 Am = spzeros(Float64, n, n)
 initMat!(Am, diag_l, diag_u, n; scale=0.1, sparsity=sp)
-genMat = nonsym(n, diag_l, diag_u, spec, Am, nilp)
+@time genMat = nonsym(n, diag_l, diag_u, spec, Am, nilp)
 sparsity = nnz(genMat) / (n * n)
 @info "sparsity=" sparsity
 spy(genMat, legend = :none, title="size:$n, diag_l:$diag_l, diag_u:$diag_u, nbOne:$nbOne, nilpdiag: $nilpdiag, sp: $sp",titlefont = font(8))

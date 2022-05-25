@@ -90,18 +90,13 @@ function nonsym(
     matAop = Am
 
     fact = 1
-    fact = factorial(Tv2(2 * (nilp.degree-1)),(2 * (nilp.degree-1)))
-    Am = fact * Am
 
     for k = 1 : 2 * (nilp.degree-1)
-        #matAop = matAop * nilp.nilpMat - nilp.nilpMat * matAop
-        matAop = MxNilp(matAop, nilp) - NilpxM(matAop, nilp)
-        fact /= factorial(Tv2(k + 1),k+1)
+        nilpMat = NilpMat(nilp)
+        matAop = matAop * nilpMat - nilpMat * matAop
+        fact /= factorial(k,k)
         Am += fact * matAop
     end
-
-    fact = factorial(Tv2(2 * (nilp.degree-1)), 2 * (nilp.degree-1))
-    Am = (inv(fact)) * Am
-
+    
     return Am
 end
